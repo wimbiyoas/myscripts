@@ -39,7 +39,7 @@ KERNEL_DIR=$PWD
 KERNEL="Ignite"
 
 # Kernel zip name type
-TYPE="foozle"
+TYPE="Stable"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -52,7 +52,7 @@ DEVICE="X00T"
 DEFCONFIG=X00T_defconfig
 
 # List the kernel version of each device
-VERSION="BETA" # sdm660-4.19-test branch
+VERSION="BETA" # sdm660-4.19 branch
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
