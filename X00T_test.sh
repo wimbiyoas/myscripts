@@ -56,10 +56,10 @@ KERNELTYPE1=EAS
 DEFCONFIG=X00T_defconfig
 
 # List the kernel version of each device
-VERSION="NOC" # sdm660-hmp branch
-VERSION1="OC" # sdm660-hmp-oc branch
-VERSION2="NOC" # sdm660-eas branch
-VERSION3="OC" # sdm660-eas-oc branch
+VERSION="NOC" # sdm660-hmp-test branch
+VERSION1="OC" # sdm660-hmp-oc-test branch
+VERSION2="NOC" # sdm660-eas-test branch
+VERSION3="OC" # sdm660-eas-oc-test branch
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -124,12 +124,6 @@ then
 		export KBUILD_BUILD_VERSION="1"
 		export KBUILD_BUILD_HOST="DroneCI"
 		export CI_BRANCH=$DRONE_BRANCH
-	fi
-	if [ -n "$GITHUB" ]
-	then
-		export KBUILD_BUILD_VERSION="1"
-		export KBUILD_BUILD_HOST="Github"
-		export CI_BRANCH=$GITHUB_BRANCH
 	else
 		echo "Not presetting Build Version"
 	fi
@@ -226,27 +220,22 @@ tg_post_build() {
 
 # Function to replace defconfig versioning
 setversioning() {
-if [ "$CI_BRANCH" == "sdm660-hmp" ]; then
-    # For staging branch
+if [[ "$CI_BRANCH" == "sdm660-hmp-test" ]]; then
     KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION-$DATE"
-    # Export our new localversion and zipnames
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
-elif [ "$CI_BRANCH" == "sdm660-hmp-oc" ]; then
-	# For staging branch
+elif [[ "$CI_BRANCH" == "sdm660-hmp-oc-test" ]]; then
     KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION1-$DATE"
-    # Export our new localversion and zipnames
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
-elif [ "$CI_BRANCH" == "sdm660-eas" ]; then
-	# For staging branch
+elif [[ "$CI_BRANCH" == "sdm660-eas-test" ]]; then
     KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION2-$DATE"
-    # Export our new localversion and zipnames
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
-elif [ "$CI_BRANCH" == "sdm660-eas-oc" ]; then
-	# For staging branch
+else
     KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION3-$DATE"
+    export KERNELTYPE KERNELNAME
+    export ZIPNAME="$KERNELNAME.zip"
 fi
 }
 
