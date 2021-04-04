@@ -132,6 +132,7 @@ then
 		export CI_BRANCH=$GITHUB_BRANCH
 	else
 		echo "Not presetting Build Version"
+	fi
 fi
 
 # Check Kernel Version
