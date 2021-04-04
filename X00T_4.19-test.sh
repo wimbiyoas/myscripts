@@ -36,10 +36,10 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Aura"
+KERNEL="Ignite"
 
 # Kernel zip name type
-TYPE="Stable"
+TYPE="foozle"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -47,19 +47,12 @@ MODEL="Asus Zenfone Max Pro M1"
 # The codename of the device
 DEVICE="X00T"
 
-# Kernel revision
-KERNELTYPE=HMP
-KERNELTYPE1=EAS
-
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
 DEFCONFIG=X00T_defconfig
 
 # List the kernel version of each device
-VERSION="NOC"	# sdm660-hmp branch
-VERSION1="OC"	# sdm660-hmp-oc branch
-VERSION2="NOC"	# sdm660-eas branch
-VERSION3="OC"	# sdm660-eas-oc branch
+VERSION="BETA" # sdm660-4.19-test branch
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -67,7 +60,7 @@ export CI_BRANCH
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=gcc
+COMPILER=clang
 	if [ $COMPILER = "clang" ]
 	then
 		# install few necessary packages
@@ -82,7 +75,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1001347363864"
+		CHATID="-1001291890692"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -220,20 +213,12 @@ tg_post_build() {
 
 # Function to replace defconfig versioning
 setversioning() {
-if [[ "$CI_BRANCH" == "sdm660-hmp" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
-elif [[ "$CI_BRANCH" == "sdm660-hmp-oc" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION1-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
-elif [[ "$CI_BRANCH" == "sdm660-eas" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION2-$DATE"
+if [[ "$CI_BRANCH" == "sdm660-4.19-test" ]]; then
+    KERNELNAME="$KERNEL-$DEVICE-$TYPE-$VERSION-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 else
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION3-$DATE"
+    KERNELNAME="$KERNEL-$DEVICE-$TYPE-$VERSION-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 fi
@@ -314,6 +299,7 @@ build_kernel() {
 gen_zip() {
 	msg "|| Zipping into a flashable zip ||"
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
+	mv "$KERNEL_DIR"/drivers/staging/qcacld-3.0/wlan.ko AnyKernel3/built/modules/vendor/lib/modules/wlan.ko
 	if [ $BUILD_DTBO = 1 ]
 	then
 		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
