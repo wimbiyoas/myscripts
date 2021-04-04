@@ -36,11 +36,10 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Neon"
+KERNEL="Aura"
 
 # Kernel zip name type
 TYPE="foozle"
-TYPE1="experimental"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -50,14 +49,17 @@ DEVICE="X00T"
 
 # Kernel revision
 KERNELTYPE=HMP
+KERNELTYPE1=EAS
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
 DEFCONFIG=X00T_defconfig
 
 # List the kernel version of each device
-VERSION="Foozle" # sdm660-hmp branch
-VERSION1="Experimental" # sdm660-hmp-oc branch
+VERSION="NOC" # sdm660-hmp branch
+VERSION1="OC" # sdm660-hmp-oc branch
+VERSION2="NOC" # sdm660-eas branch
+VERSION3="OC" # sdm660-eas-oc branch
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -65,7 +67,7 @@ export CI_BRANCH
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 	if [ $COMPILER = "clang" ]
 	then
 		# install few necessary packages
@@ -122,9 +124,14 @@ then
 		export KBUILD_BUILD_VERSION="1"
 		export KBUILD_BUILD_HOST="DroneCI"
 		export CI_BRANCH=$DRONE_BRANCH
+	fi
+	if [ -n "$GITHUB" ]
+	then
+		export KBUILD_BUILD_VERSION="1"
+		export KBUILD_BUILD_HOST="Github"
+		export CI_BRANCH=$GITHUB_BRANCH
 	else
 		echo "Not presetting Build Version"
-	fi
 fi
 
 # Check Kernel Version
@@ -142,16 +149,16 @@ clone() {
 	echo " "
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Ignite clang ||"
-		git clone --depth=1 https://github.com/wimbiyoas/ignite-clang clang
+		msg "|| Cloning Proton clang ||"
+		git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 
 		# Toolchain Directory defaults to clang
 		TC_DIR=$KERNEL_DIR/clang
 	elif [ $COMPILER = "gcc" ]
 	then
-		msg "|| Cloning GCC 9.2.0 baremetal ||"
-		git clone https://github.com/kdrag0n/aarch64-elf-gcc.git -b 9.x --depth=1 gcc64
-		git clone https://github.com/kdrag0n/arm-eabi-gcc.git -b 9.x --depth=1 gcc32
+		msg "|| Cloning GCC 10.2.0 baremetal ||"
+		git clone https://github.com/arter97/arm64-gcc.git -b master --depth=1 gcc64
+		git clone https://github.com/arter97/arm32-gcc.git -b master --depth=1 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -218,18 +225,27 @@ tg_post_build() {
 
 # Function to replace defconfig versioning
 setversioning() {
-if [[ "$CI_BRANCH" == "sdm660-hmp" ]]; then
+if [ "$CI_BRANCH" == "sdm660-hmp" ]; then
     # For staging branch
     KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION-$DATE"
     # Export our new localversion and zipnames
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
-else
+elif [ "$CI_BRANCH" == "sdm660-hmp-oc" ]; then
 	# For staging branch
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE1-$VERSION1-$DATE"
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION1-$DATE"
     # Export our new localversion and zipnames
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
+elif [ "$CI_BRANCH" == "sdm660-eas" ]; then
+	# For staging branch
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION2-$DATE"
+    # Export our new localversion and zipnames
+    export KERNELTYPE KERNELNAME
+    export ZIPNAME="$KERNELNAME.zip"
+elif [ "$CI_BRANCH" == "sdm660-eas-oc" ]; then
+	# For staging branch
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION3-$DATE"
 fi
 }
 
