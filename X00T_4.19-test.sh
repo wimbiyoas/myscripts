@@ -305,7 +305,7 @@ gen_zip() {
 		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
 	cd AnyKernel3 || exit
-	zip -r9 "$ZIPNAME" * -x .git README.md
+	zip -r9 "$ZIPNAME" * -x "modules/vendor/lib/modules/placeholder" "*.zip" .git README.md
 
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME"
