@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Blaze"
+KERNEL="Ignite"
 
 # Kernel zip name type
 TYPE="foozle"
