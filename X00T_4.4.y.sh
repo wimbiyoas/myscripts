@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="AURA"
+KERNEL="Error"
 
 # Kernel zip name type
 TYPE="foozle"
@@ -55,7 +55,7 @@ KERNELTYPE=HMP
 DEFCONFIG=X00T_defconfig
 
 # List the kernel version of each device
-VERSION="Foozle"
+VERSION="foozle"
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)

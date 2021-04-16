@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Aura"
+KERNEL="Error"
 
 # Kernel zip name type
 TYPE="Stable"
@@ -48,18 +48,12 @@ MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00T"
 
 # Kernel revision
-KERNELTYPE=HMP
-KERNELTYPE1=EAS
+KERNELTYPE=EAS
+KERNELTYPE1=HMP
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
 DEFCONFIG=X00T_defconfig
-
-# List the kernel version of each device
-VERSION="NOC"	# sdm660-hmp branch
-VERSION1="OC"	# sdm660-hmp-oc branch
-VERSION2="NOC"	# sdm660-eas branch
-VERSION3="OC"	# sdm660-eas-oc branch
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -220,20 +214,12 @@ tg_post_build() {
 
 # Function to replace defconfig versioning
 setversioning() {
-if [[ "$CI_BRANCH" == "sdm660-hmp" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
-elif [[ "$CI_BRANCH" == "sdm660-hmp-oc" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION1-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
-elif [[ "$CI_BRANCH" == "sdm660-eas" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION2-$DATE"
+if [[ "$CI_BRANCH" == "sdm660-eas" ]]; then
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 else
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION3-$DATE"
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 fi
