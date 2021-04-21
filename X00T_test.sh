@@ -39,7 +39,7 @@ KERNEL_DIR=$PWD
 KERNEL="ERROR"
 
 # Kernel zip name type
-TYPE="nightly"
+TYPE="#404"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -54,9 +54,6 @@ KERNELTYPE1=HMP
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
 DEFCONFIG=X00T_defconfig
-
-# List the kernel version of each device
-VERSION="#404"
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -218,11 +215,11 @@ tg_post_build() {
 # Function to replace defconfig versioning
 setversioning() {
 if [[ "$CI_BRANCH" == "sdm660-eas-test" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$VERSION-$DATE"
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 else
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$VERSION-$DATE"
+    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 fi
