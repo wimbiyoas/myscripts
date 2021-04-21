@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Error"
+KERNEL="ERROR"
 
 # Kernel zip name type
 TYPE="Stable"

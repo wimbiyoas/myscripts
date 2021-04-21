@@ -36,10 +36,10 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Error"
+KERNEL="ERROR"
 
 # Kernel zip name type
-TYPE="foozle"
+TYPE="nightly"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
