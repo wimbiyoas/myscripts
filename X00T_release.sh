@@ -145,9 +145,9 @@ clone() {
 		TC_DIR=$KERNEL_DIR/clang
 	elif [ $COMPILER = "gcc" ]
 	then
-		msg "|| Cloning GCC 10.2.0 baremetal ||"
-		git clone https://github.com/arter97/arm64-gcc.git -b master --depth=1 gcc64
-		git clone https://github.com/arter97/arm32-gcc.git -b master --depth=1 gcc32
+		msg "|| Cloning GCC ||"
+		git clone https://github.com/fiqri19102002/aarch64-gcc.git -b elf-gcc-10 --depth=1 gcc64
+		git clone https://github.com/fiqri19102002/arm-gcc.git -b elf-gcc-10 --depth=1 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -165,7 +165,7 @@ clone() {
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="Wimbiyoas"
+	export KBUILD_BUILD_USER="neonpoi"
 	export ARCH=arm64
 	export SUBARCH=arm64
 
