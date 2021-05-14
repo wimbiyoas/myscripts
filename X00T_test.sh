@@ -152,9 +152,6 @@ clone() {
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
 
-	msg "|| Cloning Anykernel for X00T ||"
-	git clone --depth 1 https://github.com/wimbiyoas/AnyKernel3.git -b X00T
-
 	if [ $BUILD_DTBO = 1 ]
 	then
 		msg "|| Cloning libufdt ||"
