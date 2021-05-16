@@ -36,10 +36,10 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-KERNEL="Error"
+KERNEL="ERROR"
 
 # Kernel zip name type
-TYPE="foozle"
+TYPE="#404"
 
 #The name of the device for which the kernel is built
 MODEL="Realme X"
@@ -132,8 +132,8 @@ clone() {
 	echo " "
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Proton clang ||"
-		git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
+		msg "|| Cloning Clang ||"
+		git clone --depth=1 https://github.com/wimbiyoas/error-clang clang
 
 		# Toolchain Directory defaults to clang
 		TC_DIR=$KERNEL_DIR/clang
@@ -146,9 +146,6 @@ clone() {
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
 
-	msg "|| Cloning Anykernel for RMX1901 ||"
-	git clone --depth 1 https://github.com/wimbiyoas/AnyKernel3.git -b RMX1901
-
 	if [ $BUILD_DTBO = 1 ]
 	then
 		msg "|| Cloning libufdt ||"
@@ -159,7 +156,7 @@ clone() {
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="Wimbiyoas"
+	export KBUILD_BUILD_USER="wimbiyoas"
 	export ARCH=arm64
 	export SUBARCH=arm64
 
