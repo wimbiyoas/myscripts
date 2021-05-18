@@ -39,7 +39,7 @@ KERNEL_DIR=$PWD
 KERNEL="ERROR"
 
 # Kernel zip name type
-TYPE="#404"
+TYPE="Stable"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -61,7 +61,7 @@ export CI_BRANCH
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 	if [ $COMPILER = "clang" ]
 	then
 		# install few necessary packages
@@ -76,7 +76,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1001291890692"
+		CHATID="-1001347363864"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -138,7 +138,7 @@ clone() {
 	echo " "
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Clang ||"
+		msg "|| Cloning Proton clang ||"
 		git clone --depth=1 https://github.com/wimbiyoas/error-clang clang
 
 		# Toolchain Directory defaults to clang
@@ -211,7 +211,7 @@ tg_post_build() {
 
 # Function to replace defconfig versioning
 setversioning() {
-if [[ "$CI_BRANCH" == "sdm660-eas-test" ]]; then
+if [[ "$CI_BRANCH" == "sdm660-eas" ]]; then
     KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
