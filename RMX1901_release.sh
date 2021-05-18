@@ -42,7 +42,7 @@ KERNEL="ERROR"
 TYPE="Stable"
 
 #The name of the device for which the kernel is built
-MODEL="Asus Zenfone Max Pro M1"
+MODEL="Realme X"
 
 # The codename of the device
 DEVICE="RMX1901"
