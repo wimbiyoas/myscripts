@@ -56,7 +56,7 @@ export CI_BRANCH
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 	if [ $COMPILER = "clang" ]
 	then
 		# install few necessary packages
@@ -140,8 +140,8 @@ clone() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC ||"
-		git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 --depth=1 gcc64
-		git clone https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master --depth=1 gcc32
+		git clone https://github.com/fiqri19102002/aarch64-gcc.git -b elf-gcc-10 --depth=1 gcc64
+		git clone https://github.com/fiqri19102002/arm-gcc.git -b elf-gcc-10 --depth=1 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
