@@ -42,11 +42,12 @@ KERNEL="ERROR"
 TYPE="#404"
 
 #The name of the device for which the kernel is built
-MODEL="Realme X"
+MODEL="Asus Zenfone Max Pro M1"
 
 # The codename of the device
 DEVICE="RMX1901"
 
+# The defconfig which should be used. Get it from config.gz from
 # your device or check source
 DEFCONFIG=RMX1901_defconfig
 
@@ -128,6 +129,7 @@ COMMIT_HEAD=$(git log --oneline -1)
 DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
 # Now Its time for other stuffs like cloning, exporting, etc
+
 clone() {
 	echo " "
 	if [ $COMPILER = "clang" ]
@@ -156,7 +158,7 @@ clone() {
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="wimbiyoas"
+	export KBUILD_BUILD_USER="neonpoi"
 	export ARCH=arm64
 	export SUBARCH=arm64
 
@@ -166,7 +168,7 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING="Built with Love"
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -206,16 +208,12 @@ tg_post_build() {
 # Function to replace defconfig versioning
 setversioning() {
 if [[ "$CI_BRANCH" == "sdm710-test" ]]; then
-    # For staging branch
     KERNELNAME="$KERNEL-$DEVICE-$TYPE-$DATE"
-    # Export our new localversion and zipnames
-    export KERNELNAME
+    export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 else
-	# For staging branch
     KERNELNAME="$KERNEL-$DEVICE-$TYPE-$DATE"
-    # Export our new localversion and zipnames
-    export KERNELNAME
+    export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 fi
 }
@@ -246,7 +244,7 @@ build_kernel() {
 	fi
 
 	BUILD_START=$(date +"%s")
-	
+
 	if [ $COMPILER = "clang" ]
 	then
 		make -j"$PROCS" O=out \
@@ -257,15 +255,15 @@ build_kernel() {
 				OBJCOPY=llvm-objcopy \
 				OBJDUMP=llvm-objdump \
 				STRIP=llvm-strip \
+				CLANG_TRIPLE=aarch64-linux-gnu- \
 				CROSS_COMPILE=aarch64-linux-gnu- \
 				CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-
 	fi
 
 	if [ $COMPILER = "gcc" ]
 	then
 		export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi-
-		make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
+		make -j"$PROCS" O=out CROSS_COMPILE=aarch64-elf-
 	fi
 
 
