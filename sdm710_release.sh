@@ -42,18 +42,14 @@ KERNEL="ERROR"
 TYPE="Stable"
 
 #The name of the device for which the kernel is built
-MODEL="Asus Zenfone Max Pro M1"
+MODEL="Realme X"
 
 # The codename of the device
-DEVICE="X00T"
-
-# Kernel revision
-KERNELTYPE=EAS
-KERNELTYPE1=HMP
+DEVICE="RMX1901"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00T_defconfig
+DEFCONFIG=sdm710_defconfig
 
 # Retrieves branch information
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -102,7 +98,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-export token="1686322470:AAGXAiglWR8ktsqyjwPx4AXr66LZjWoQt80"
+export token="1692653685:AAH4tN-YSEvlUcAkJki7Nf9eFrrRX_PQYGs"
 
 ## Check for CI
 if [ -n "$CI" ]
@@ -211,12 +207,12 @@ tg_post_build() {
 
 # Function to replace defconfig versioning
 setversioning() {
-if [[ "$CI_BRANCH" == "sdm660-eas" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
+if [[ "$CI_BRANCH" == "sdm710" ]]; then
+    KERNELNAME="$KERNEL-$DEVICE-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 else
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
+    KERNELNAME="$KERNEL-$DEVICE-$TYPE-$DATE"
     export KERNELTYPE KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
 fi

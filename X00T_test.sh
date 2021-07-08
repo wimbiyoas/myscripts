@@ -39,7 +39,10 @@ KERNEL_DIR=$PWD
 KERNEL="ERROR"
 
 # Kernel zip name type
-TYPE="#404"
+TYPE="nightly"
+
+# Kernel linux
+LINUX="CAF"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -76,7 +79,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1001323768379"
+		CHATID="-1001291890692"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -102,7 +105,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-export token="1686322470:AAGXAiglWR8ktsqyjwPx4AXr66LZjWoQt80"
+export token="1692653685:AAH4tN-YSEvlUcAkJki7Nf9eFrrRX_PQYGs"
 
 ## Check for CI
 if [ -n "$CI" ]
@@ -212,13 +215,21 @@ tg_post_build() {
 # Function to replace defconfig versioning
 setversioning() {
 if [[ "$CI_BRANCH" == "sdm660-eas-test" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
-else
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
+	KERNELNAME="$KERNEL-$LINUX-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
+	export KERNELTYPE KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
+elif [[ "$CI_BRANCH" == "sdm660-eas-oc-test" ]]; then
+	KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
+	export KERNELTYPE KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
+elif [[ "$CI_BRANCH" == "sdm660-hmp-test" ]]; then
+	KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
+	export KERNELTYPE1 KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
+elif [[ "$CI_BRANCH" == "sdm660-hmp-oc-test" ]]; then
+	KERNELNAME="$KERNEL-$LINUX-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
+	export KERNELTYPE1 KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
 fi
 }
 

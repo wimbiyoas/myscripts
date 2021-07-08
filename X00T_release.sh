@@ -39,7 +39,10 @@ KERNEL_DIR=$PWD
 KERNEL="ERROR"
 
 # Kernel zip name type
-TYPE="Stable"
+TYPE="STABLE"
+
+# Kernel linux
+LINUX="CAF"
 
 #The name of the device for which the kernel is built
 MODEL="Asus Zenfone Max Pro M1"
@@ -102,7 +105,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-export token="1686322470:AAGXAiglWR8ktsqyjwPx4AXr66LZjWoQt80"
+export token="1692653685:AAH4tN-YSEvlUcAkJki7Nf9eFrrRX_PQYGs"
 
 ## Check for CI
 if [ -n "$CI" ]
@@ -138,7 +141,7 @@ clone() {
 	echo " "
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Proton clang ||"
+		msg "|| Cloning Clang ||"
 		git clone --depth=1 https://github.com/wimbiyoas/error-clang clang
 
 		# Toolchain Directory defaults to clang
@@ -212,13 +215,21 @@ tg_post_build() {
 # Function to replace defconfig versioning
 setversioning() {
 if [[ "$CI_BRANCH" == "sdm660-eas" ]]; then
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
-else
-    KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
-    export KERNELTYPE KERNELNAME
-    export ZIPNAME="$KERNELNAME.zip"
+	KERNELNAME="$KERNEL-$LINUX-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
+	export KERNELTYPE KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
+elif [[ "$CI_BRANCH" == "sdm660-eas-oc" ]]; then
+	KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE-$TYPE-$DATE"
+	export KERNELTYPE KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
+elif [[ "$CI_BRANCH" == "sdm660-hmp" ]]; then
+	KERNELNAME="$KERNEL-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
+	export KERNELTYPE1 KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
+elif [[ "$CI_BRANCH" == "sdm660-hmp-oc" ]]; then
+	KERNELNAME="$KERNEL-$LINUX-$DEVICE-$KERNELTYPE1-$TYPE-$DATE"
+	export KERNELTYPE1 KERNELNAME
+	export ZIPNAME="$KERNELNAME.zip"
 fi
 }
 
